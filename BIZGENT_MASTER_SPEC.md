@@ -860,4 +860,220 @@ Follow these instructions:
 
 ---
 
+# ADDITIONAL REQUIREMENTS AND CLARIFICATIONS
+
+These requirements extend and clarify the existing Bizgent master specification. They are mandatory and should be considered during architecture planning and implementation.
+
+## 1. Frontend Mock Data and Backend Integration
+
+During Phase 1, mock data may be used to build and demonstrate the frontend while the backend is not yet available.
+
+However, the frontend must be designed for a clean transition to real backend data.
+
+Requirements:
+
+- Keep mock data separate from actual API services. Do not hardcode mock records directly throughout page components.
+- Create a centralised API service layer for all backend requests.
+- Define the expected API response structures early so frontend and backend development follow the same contract.
+- During Phase 2, replace all mock data with actual API responses.
+- Do not leave mock data silently appearing as if it were real user or business information.
+- Mock data must only be available in an explicitly enabled development/demo mode.
+- Production must never fall back to fabricated balances, transactions, expenses, approvals or user records.
+
+Every data-driven page and component must support:
+
+- Loading states while requests are in progress.
+- Proper empty states when the API returns no records.
+- Error states when a request fails.
+- Retry actions where appropriate.
+- Authentication-expired handling and appropriate redirects.
+- Safe fallback UI that does not fabricate financial data.
+
+If a request fails, display a clear message and offer retry where appropriate. Do not replace a failed balance or transaction request with mock financial information.
+
+Use reusable loading, error, empty-state and data-fetching components where appropriate.
+
+After backend integration, test every page to confirm that it displays actual authenticated API data and that no unintended mock data remains.
+
+## 2. Centralised Environment Configuration
+
+All environment-dependent settings must be configurable from centralised environment variables rather than scattered throughout the source code.
+
+This includes:
+
+- Application name and public application URL.
+- Frontend and backend API URLs.
+- Backend allowed origins.
+- Email sender address and sender display name.
+- Support and notification contact addresses.
+- Brevo API credentials.
+- AI provider and API credentials.
+- Database connection.
+- JWT configuration.
+- NEAR network selection.
+- NEAR RPC endpoint.
+- Vault contract address.
+- USDC token contract address.
+- Other network-specific configuration.
+
+Suggested backend environment variables:
+
+APP_NAME=Bizgent
+APP_BASE_URL=
+FRONTEND_URL=
+API_BASE_URL=
+ALLOWED_ORIGINS=
+
+BREVO_API_KEY=
+BREVO_SENDER_EMAIL=
+BREVO_SENDER_NAME=Bizgent
+SUPPORT_EMAIL=
+
+AI_PROVIDER=
+AI_API_KEY=
+AI_MODEL=
+
+MONGODB_URI=
+JWT_SECRET=
+JWT_EXPIRES_IN=
+
+NEAR_NETWORK=testnet
+NEAR_RPC_URL=
+BIZGENT_CONTRACT_ID=
+USDC_CONTRACT_ID=
+
+These are example variable names, not actual credentials. Choose the final names consistently throughout the project.
+
+Requirements:
+
+- Create `.env.example` files with placeholder values.
+- Never commit actual `.env` files or secrets to GitHub.
+- Validate required environment variables during backend startup.
+- Fail safely with a clear configuration error if a required variable is missing.
+- Keep frontend-exposed variables limited to public configuration. Never expose secrets through `VITE_` variables.
+- Do not hardcode sender email addresses, support email addresses, API URLs or contract addresses inside application components or business logic.
+- Changing a sender address, application URL or network configuration should require changing the relevant environment configuration, not editing multiple source files.
+
+Email recipients must come from the relevant user's or business contact information, not from a hardcoded recipient address.
+
+The sender identity must be configured centrally and must use an address that has been verified and authorised with Brevo. Do not assume that any Gmail address can automatically be used as a verified sender.
+
+Email templates should also be reusable and centrally managed. Avoid duplicating notification email content across different routes.
+
+Keep WhatsApp notification configuration separate from email configuration, even if both are delivered through Brevo.
+
+## 3. Currency Display and Financial Formatting
+
+Bizgent's primary treasury and payment asset is native USDC on NEAR.
+
+The application must clearly distinguish between:
+
+1. USDC token amounts.
+2. USD-denominated reporting or equivalent values.
+
+For actual treasury balances, deposits, withdrawals and blockchain transactions, display the token denomination explicitly, for example:
+
+1,250.00 USDC
+
+For business reports and expense summaries, USD formatting may be used where the amount is an accounting/reporting value, for example:
+
+$1,250.00 USD
+
+Where a USDC amount is also shown as a USD equivalent, label it clearly. Do not imply that an estimated or calculated equivalent is a separate fiat balance.
+
+Use reusable currency-formatting utilities instead of manually adding `$` or `USDC` throughout the frontend.
+
+Requirements:
+
+- Never use floating-point arithmetic for financial calculations.
+- Store and process on-chain token amounts in integer base units.
+- Respect the token's actual decimal configuration.
+- Use appropriate decimal formatting for display.
+- Never silently round an amount in a way that changes the actual payment.
+- Ensure the amount and asset shown to the user match the amount and asset submitted for execution.
+
+For the MVP, USDC is the primary payment asset. Do not introduce unnecessary multi-currency complexity.
+
+## 4. Testnet and Mainnet Environments
+
+Bizgent must support separate testnet and mainnet configurations.
+
+Development and testing must begin on NEAR testnet.
+
+Testnet requirements:
+
+- Use a dedicated NEAR testnet wallet/account.
+- Use testnet NEAR tokens for network gas and deployment operations.
+- Use the official testnet USDC contract, not the mainnet USDC contract.
+- Use testnet vault contracts deployed specifically for testing.
+- Clearly label the entire application as TESTNET or DEMO when connected to testnet.
+- Never represent testnet USDC as real money.
+- Ensure that testnet transactions cannot accidentally be submitted to mainnet.
+
+Mainnet requirements:
+
+- Use the official native USDC contract on NEAR.
+- Use a separately deployed and verified mainnet Bizgent contract.
+- Use mainnet RPC and wallet configuration.
+- Require an explicit, deliberate deployment/configuration change before mainnet is enabled.
+- Do not silently switch networks.
+- Display the active network clearly in the interface.
+- Verify the token and contract addresses before enabling real transactions.
+
+Network configuration must be centralised. The application should not require source-code rewrites to switch from testnet to mainnet.
+
+Do not hardcode testnet or mainnet contract addresses in multiple files.
+
+## 5. Testnet Funding and Demonstration
+
+The project must include documentation explaining how the developer obtains testnet NEAR and testnet USDC.
+
+Testnet NEAR is required for gas and deployment operations. Testnet USDC is required for testing deposits, balances and payments.
+
+Testnet tokens have no real financial value and must never be presented as real funds.
+
+The developer documentation must explain how to:
+
+- Create a NEAR testnet account.
+- Obtain testnet NEAR.
+- Obtain testnet USDC.
+- Connect the testnet wallet to Bizgent.
+- Deploy the testnet contract.
+- Test deposits, payments, withdrawals and approvals.
+
+## 6. Financial Data Integrity and UI Fallbacks
+
+Financial information must always be traceable to its actual source.
+
+- Treasury balances must come from verified on-chain information or clearly identified backend accounting records.
+- Transactions must not be marked successful until the corresponding on-chain result has been verified.
+- Pending, failed, rejected and completed transactions must be visually distinguishable.
+- A network or API failure must never be presented as a zero balance unless the balance was successfully fetched and is genuinely zero.
+- Do not use placeholder transaction hashes or fabricated blockchain confirmations in production.
+- If on-chain and backend records disagree, flag the inconsistency rather than silently choosing one.
+
+## 7. Documentation and Acceptance Tests
+
+Update the README and developer documentation to explain:
+
+- Environment variable setup.
+- Testnet wallet creation and funding.
+- Testnet USDC acquisition.
+- Testnet deployment.
+- Mainnet deployment precautions.
+- Email sender configuration.
+- AI provider configuration.
+- Frontend mock-data replacement and API integration.
+
+Add acceptance tests confirming:
+
+- Production does not display mock financial records.
+- API failures display proper error states.
+- Loading and empty states work correctly.
+- Environment configuration is respected.
+- The active network is clearly displayed.
+- Testnet and mainnet contract configurations cannot be confused.
+- Financial values are formatted with the correct asset denomination.
+- Email sender details can be changed centrally without editing application logic.
+
 # END OF MASTER SPECIFICATION
