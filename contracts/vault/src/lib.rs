@@ -1,4 +1,4 @@
-//! Bizgent Vault
+﻿//! Bizgent Vault
 //!
 //! One central contract that holds native USDC (NEP-141) on behalf of many businesses.
 //! Each business has a logically isolated balance, an owner (a NEAR account) and an
@@ -18,7 +18,7 @@
 
 use near_sdk::json_types::U128;
 use near_sdk::serde_json::{self, json};
-use near_sdk::store::{LookupMap, LookupSet};
+use near_sdk::store::LookupMap;
 use near_sdk::{
     env, ext_contract, near, require, AccountId, Gas, NearToken, PanicOnDefault, Promise,
     PromiseOrValue, PromiseResult,
@@ -135,7 +135,8 @@ pub struct Vault {
     paused: bool,
     businesses: LookupMap<String, Business>,
     payments: LookupMap<String, Payment>,
-    recipients: LookupSet<String>,
+    /// Approved recipients keyed by usiness_id|account_id (LookupMap so storage can be flushed and measured).
+    recipients: LookupMap<String, bool>,
 }
 
 fn today() -> u64 {
@@ -182,7 +183,7 @@ impl Vault {
             paused: false,
             businesses: LookupMap::new(b"b"),
             payments: LookupMap::new(b"p"),
-            recipients: LookupSet::new(b"r"),
+            recipients: LookupMap::new(b"r"),
         }
     }
 
@@ -316,7 +317,7 @@ impl Vault {
             require!(biz.recipient_count < MAX_RECIPIENTS, "Recipient limit reached");
             require!(account_id != biz.owner, "Owner does not need to be a recipient");
         }
-        if self.recipients.insert(key) {
+        if self.recipients.insert(key, true).is_none() {
             self.business_mut(&business_id).recipient_count += 1;
             self.charge_storage(&business_id, before);
             emit("recipient_added", json!({ "business_id": business_id, "account_id": account_id }));
@@ -327,7 +328,7 @@ impl Vault {
     pub fn remove_recipient(&mut self, business_id: String, account_id: AccountId) {
         let before = env::storage_usage();
         self.owner_business_mut(&business_id);
-        if self.recipients.remove(&recipient_key(&business_id, &account_id)) {
+        if self.recipients.remove(&recipient_key(&business_id, &account_id)).is_some() {
             let biz = self.business_mut(&business_id);
             biz.recipient_count = biz.recipient_count.saturating_sub(1);
             self.charge_storage(&business_id, before);
@@ -379,7 +380,7 @@ impl Vault {
     ) -> Promise {
         require!(!self.paused, "Vault is paused");
         let caller = env::predecessor_account_id();
-        let approved = self.recipients.contains(&recipient_key(&business_id, &recipient));
+        let approved = self.recipients.contains_key(&recipient_key(&business_id, &recipient));
         let biz = self.business_mut(&business_id);
         require!(biz.agent.as_ref() == Some(&caller), "Caller is not this business's agent");
         require!(!biz.agent_paused, "Agent is paused");
@@ -448,7 +449,7 @@ impl Vault {
     }
 
     pub fn is_recipient_approved(&self, business_id: String, account_id: AccountId) -> bool {
-        self.recipients.contains(&recipient_key(&business_id, &account_id))
+        self.recipients.contains_key(&recipient_key(&business_id, &account_id))
     }
 
     pub fn get_payment(&self, business_id: String, payment_id: String) -> Option<PaymentView> {
