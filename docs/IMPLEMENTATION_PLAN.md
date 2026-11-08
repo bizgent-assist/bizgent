@@ -13,9 +13,9 @@ never has to be reworked around contract semantics.
 - [x] Vault with isolated business balances, owner, agent, policy, approved recipients
 - [x] `ft_on_transfer` with predecessor check + refunds; `ft_transfer` with 1 yocto + callback restore
 - [x] Unique payment ids, daily/per-tx limits, pause (withdrawals exempt), storage accounting, NEP-297 events
-- [x] 20 unit tests written
-- [ ] Unit tests run + wasm built in CI (local build blocked by Windows Smart App Control) — **needs push to GitHub**
-- [ ] Deployed to testnet
+- [x] 20 unit tests — **all passing in CI** (local Rust builds are blocked by Windows Smart App Control)
+- [x] Wasm built in CI (`bizgent_vault.wasm`, 199,564 bytes, sha256 `f132ad550e4e7eb734f5c34d88861e610f1a3f593851308cd46dfa7e83f3a121`)
+- [ ] Deployed to testnet — **needs operator testnet account** (see below)
 
 ### Backend (`server`)
 - [x] Validated central config, network/USDC cross-checks, mainnet opt-in guard
@@ -27,7 +27,8 @@ never has to be reworked around contract semantics.
 - [x] NEAR AI Cloud provider (OpenAI-compatible), controlled tools, cost caps, AI-unavailable fallback
 - [x] Brevo email + templates + webhook status; audit log
 - [x] Operator scripts: deploy vault, create locked agent, register storage, status; AI smoke test
-- [x] API test suite (in-memory MongoDB + simulated vault)
+- [x] API test suite (in-memory MongoDB + simulated vault) — **24/24 passing**
+- [x] Live testnet RPC check: official USDC contract reports `USDC`, 6 decimals; NEP-145 storage checks work
 
 ### Frontend (`client`)
 - [x] Design system, layouts, responsive navigation, network/demo banners
@@ -35,7 +36,8 @@ never has to be reworked around contract semantics.
 - [x] API service layer, loading/empty/error/retry states, session-expiry redirect
 - [x] Dev-only mock adapter stripped from production builds
 - [x] Wallet (near-connect): link, sign & send, prepare → sign → verify flows
-- [x] Production build passes
+- [x] Production build passes; mock code absent from the production bundle
+- [x] Browser walkthrough: register → dashboard → recipient (live USDC check) → expense → payment → approval page
 
 ### Integration (needs credentials — see below)
 - [ ] NEAR AI model verified with `npm run ai:smoke`
@@ -46,7 +48,6 @@ never has to be reworked around contract semantics.
 ## Credentials / actions needed from the owner
 | Item | Where it goes |
 |---|---|
-| Push this repo to GitHub (runs the contract CI) | – |
 | Testnet operator account + private key | `server/.env.operator` (local only) |
 | Testnet NEAR + Circle testnet USDC | wallets |
 | MongoDB Atlas connection string | `MONGODB_URI` (or `npm run dev:memory` locally) |
