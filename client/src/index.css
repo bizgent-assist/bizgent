@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* Bizgent design tokens — one coherent system for surfaces, ink, accent and status. */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --color-canvas: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-subtle: #f1f3f6;
+  --color-line: #e4e7ec;
+  --color-line-strong: #d0d5dd;
+
+  --color-ink: #0e1726;
+  --color-ink-2: #344054;
+  --color-muted: #667085;
+  --color-faint: #98a2b3;
+
+  --color-brand: #0e1726;
+  --color-accent: #0f6b4f;
+  --color-accent-hover: #0b5640;
+  --color-accent-soft: #e8f3ee;
+  --color-accent-bright: #34c38f;
+
+  --color-ok: #067647;
+  --color-ok-soft: #ecfdf3;
+  --color-warn: #b54708;
+  --color-warn-soft: #fffaeb;
+  --color-bad: #b42318;
+  --color-bad-soft: #fef3f2;
+  --color-info: #175cd3;
+  --color-info-soft: #eff8ff;
+
+  --radius-card: 14px;
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+  --shadow-pop: 0 12px 32px -8px rgba(16, 24, 40, 0.18), 0 4px 8px -4px rgba(16, 24, 40, 0.08);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  ::selection { background: #cfe8dc; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+}
+
+@layer components {
+  .tabular { font-variant-numeric: tabular-nums; }
+  .card { @apply bg-surface border border-line rounded-[var(--radius-card)] shadow-[var(--shadow-card)]; }
+  .label { @apply text-[13px] font-medium text-ink-2; }
+  .input {
+    @apply w-full h-10 px-3 rounded-lg border border-line-strong bg-surface text-[14px] text-ink placeholder:text-faint
+      transition focus:outline-none focus:border-accent focus:ring-4 focus:ring-accent/10 disabled:bg-subtle disabled:text-muted;
+  }
+  .eyebrow { @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-muted; }
+}
