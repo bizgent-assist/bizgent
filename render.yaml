@@ -1,0 +1,39 @@
+# Render Blueprint for the Bizgent API (NEAR testnet MVP).
+# Secrets are declared with `sync: false` — enter them in the Render dashboard, never in git.
+services:
+  - type: web
+    name: bizgent-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/v1/health
+    autoDeploy: true
+    envVars:
+      - { key: NODE_ENV, value: production }
+      - { key: NODE_VERSION, value: "22" }
+      - { key: TRUST_PROXY, value: "2" } # Vercel edge + Render load balancer
+      - { key: APP_NAME, value: Bizgent }
+      - { key: NEAR_NETWORK, value: testnet }
+      - { key: MAINNET_ENABLED, value: "false" }
+      - { key: NEAR_RPC_URL, value: https://test.rpc.fastnear.com }
+      - { key: USDC_CONTRACT_ID, value: 3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520d03d4afcb8af }
+      - { key: USDC_DECIMALS, value: "6" }
+      - { key: AI_PROVIDER, value: near-ai }
+      - { key: AI_BASE_URL, value: https://cloud-api.near.ai/v1 }
+      - { key: AI_MODEL, value: anthropic/claude-haiku-5-5 }
+      - { key: FRONTEND_URL, sync: false }        # https://<your-app>.vercel.app
+      - { key: APP_BASE_URL, sync: false }        # https://<this-service>.onrender.com
+      - { key: ALLOWED_ORIGINS, sync: false }     # same as FRONTEND_URL
+      - { key: BIZGENT_CONTRACT_ID, sync: false } # vault.<operator>.testnet
+      - { key: MONGODB_URI, sync: false }
+      - { key: JWT_SECRET, sync: false }
+      - { key: AGENT_ACCOUNT_ID, sync: false }
+      - { key: AGENT_PRIVATE_KEY, sync: false }   # FUNCTION-CALL key only (agent_pay)
+      - { key: AI_API_KEY, sync: false }
+      - { key: BREVO_API_KEY, sync: false }
+      - { key: BREVO_SENDER_EMAIL, sync: false }
+      - { key: BREVO_SENDER_NAME, value: Bizgent }
+      - { key: SUPPORT_EMAIL, sync: false }
+      - { key: BREVO_WEBHOOK_TOKEN, sync: false }

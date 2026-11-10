@@ -1,8 +1,9 @@
 // Operator tooling (runs on the developer's machine, NOT on the server).
 // Reads operator credentials from server/.env.operator (git-ignored). The operator key is a
 // full-access key for the operator's own testnet account and must never be deployed.
-import { readFileSync, existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
+import { resolve, join } from 'node:path';
+import { homedir } from 'node:os';
 import { Account, JsonRpcProvider } from 'near-api-js';
 
 const file = resolve(process.cwd(), '.env.operator');
@@ -38,4 +39,25 @@ export const view = (contractId, method, args = {}) => provider.callFunction({ c
 
 export function txLink(res) {
   return `https://testnet.nearblocks.io/txns/${res.transaction.hash}`;
+}
+
+// Secrets are never printed. Keys go to the NEAR CLI credential store (outside the repo)
+// and/or to a git-ignored env file in server/.
+export function saveCredential(accountId, keyPair) {
+  const dir = join(homedir(), '.near-credentials', NETWORK);
+  mkdirSync(dir, { recursive: true });
+  const file = join(dir, `${accountId}.json`);
+  writeFileSync(file, JSON.stringify({ account_id: accountId, public_key: keyPair.getPublicKey().toString(), private_key: keyPair.toString() }), { mode: 0o600 });
+  return file;
+}
+
+export function upsertEnv(fileName, vars) {
+  const file = resolve(process.cwd(), fileName);
+  let text = existsSync(file) ? readFileSync(file, 'utf8') : '';
+  for (const [k, v] of Object.entries(vars)) {
+    const re = new RegExp(`^${k}=.*$`, 'm');
+    text = re.test(text) ? text.replace(re, `${k}=${v}`) : `${text.replace(/\s*$/, '')}\n${k}=${v}\n`;
+  }
+  writeFileSync(file, text);
+  return file;
 }

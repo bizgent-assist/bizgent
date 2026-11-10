@@ -37,3 +37,4 @@ target/
 *.key
 *.keystore
 wallet.json
+.e2e-state.json

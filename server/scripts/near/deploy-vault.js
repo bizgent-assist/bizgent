@@ -4,7 +4,7 @@
 import { readFileSync } from 'node:fs';
 import { KeyPair, nearToYocto, teraToGas } from 'near-api-js';
 import { Account } from 'near-api-js';
-import { USDC, arg, operator, provider, txLink, view } from './common.js';
+import { USDC, arg, operator, provider, saveCredential, txLink, upsertEnv, view } from './common.js';
 
 const op = operator();
 const prefix = arg('prefix', 'vault');
@@ -23,8 +23,8 @@ if (existing) {
   const kp = KeyPair.fromRandom('ed25519');
   const res = await op.createSubAccount({ accountOrPrefix: prefix, publicKey: kp.getPublicKey().toString(), nearToTransfer: nearToYocto(fund) });
   console.log(`Created ${vaultId}: ${txLink(res)}`);
-  console.log('\nSAVE THIS VAULT KEY OFFLINE (needed only for upgrades; never put it on the server):');
-  console.log(`VAULT_PRIVATE_KEY=${kp.toString()}\n`);
+  const saved = saveCredential(vaultId, kp);
+  console.log(`Vault full-access key saved to ${saved} (only for upgrades; never put it on the server).`);
   vault = new Account(vaultId, provider, kp.toString());
 }
 
@@ -48,4 +48,6 @@ if (!reg) {
   console.log(`Registered vault with USDC (storage_deposit ${bounds.min} yocto): ${txLink(r)}`);
 }
 console.log('\nConfig:', await view(vaultId, 'get_config'));
-console.log(`\nSet in server/.env and client/.env:\n  BIZGENT_CONTRACT_ID=${vaultId}\n  VITE_BIZGENT_CONTRACT_ID=${vaultId}`);
+upsertEnv('.env', { BIZGENT_CONTRACT_ID: vaultId });
+upsertEnv('../client/.env', { VITE_BIZGENT_CONTRACT_ID: vaultId });
+console.log(`\nWrote BIZGENT_CONTRACT_ID / VITE_BIZGENT_CONTRACT_ID=${vaultId} to server/.env and client/.env`);

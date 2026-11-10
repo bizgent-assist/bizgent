@@ -1,5 +1,10 @@
+import dns from 'node:dns';
 import mongoose from 'mongoose';
 import { env } from './config/env.js';
+
+// Optional: some Windows resolvers refuse SRV lookups from Node (mongodb+srv). Set
+// DNS_SERVERS=8.8.8.8,1.1.1.1 locally to use explicit resolvers. Not needed on Render.
+if (process.env.DNS_SERVERS) dns.setServers(process.env.DNS_SERVERS.split(',').map((s) => s.trim()));
 import { createApp } from './app.js';
 import { startJobs } from './jobs.js';
 import { chain } from './services/near/chain.js';
