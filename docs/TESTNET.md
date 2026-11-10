@@ -42,6 +42,19 @@ npm run near:status -- --vault vault.yourname.testnet --business <business-id> -
 Put `BIZGENT_CONTRACT_ID`, `AGENT_ACCOUNT_ID`, `AGENT_PRIVATE_KEY` in `server/.env` and
 `VITE_BIZGENT_CONTRACT_ID` in `client/.env`, then restart.
 
+## 4b. Automated end-to-end check (real testnet, no browser wallet)
+`server/scripts/near/e2e-testnet.js` drives the HTTP API exactly like the frontend and signs the owner's
+transactions with the owner's local key from `~/.near-credentials/testnet/<owner>.json` (testnet only;
+keys are never printed). It covers wallet linking, registration, policy, recipients, deposit, agent
+payment, contract-level rejections, owner approval, revocation and withdrawal.
+```bash
+node scripts/near/e2e-testnet.js --phase setup --owner <owner>.testnet           # needs the API running
+node scripts/near/create-agent.js --business <onchain business id>               # then restart the API
+node scripts/near/e2e-testnet.js --phase flow --owner <owner>.testnet --supplier <supplier>.testnet
+```
+Result on 2026-11-10: 3/3 + 21/21 checks passed (transactions listed in the README).
+Note: account ids are limited to 64 characters; `create-agent` shortens the prefix automatically.
+
 ## 5. Demo script
 1. Register → Profile: **Connect & link wallet** (NEP-413 signature).
 2. Business settings → **Register with wallet** (0.1 NEAR storage).

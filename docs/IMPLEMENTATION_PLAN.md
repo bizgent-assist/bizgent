@@ -15,7 +15,7 @@ never has to be reworked around contract semantics.
 - [x] Unique payment ids, daily/per-tx limits, pause (withdrawals exempt), storage accounting, NEP-297 events
 - [x] 20 unit tests — **all passing in CI** (local Rust builds are blocked by Windows Smart App Control)
 - [x] Wasm built in CI (`bizgent_vault.wasm`, 199,564 bytes, sha256 `f132ad550e4e7eb734f5c34d88861e610f1a3f593851308cd46dfa7e83f3a121`)
-- [ ] Deployed to testnet — **needs operator testnet account** (see below)
+- [x] Deployed to testnet: `vault.bizgent-operator-jayflint-2026-testnet.testnet` (2026-11-10)
 
 ### Backend (`server`)
 - [x] Validated central config, network/USDC cross-checks, mainnet opt-in guard
@@ -39,11 +39,12 @@ never has to be reworked around contract semantics.
 - [x] Production build passes; mock code absent from the production bundle
 - [x] Browser walkthrough: register → dashboard → recipient (live USDC check) → expense → payment → approval page
 
-### Integration (needs credentials — see below)
-- [ ] NEAR AI model verified with `npm run ai:smoke`
-- [ ] Brevo sender verified, emails received
-- [ ] End-to-end testnet demo (TESTNET.md §5)
-- [ ] Vercel + Render + Atlas deployed
+### Integration
+- [x] Restricted agent account created; on-chain key list = one function-call key (vault, [agent_pay])
+- [x] Real testnet e2e via the API (`scripts/near/e2e-testnet.js`): 21/21 checks
+- [x] Vercel (https://bizgent.vercel.app) + Render (https://bizgent-api.onrender.com) + Atlas deployed and verified
+- [x] Brevo emails sent from Render (status `sent`)
+- [ ] NEAR AI model live — key returns HTTP 402 (no credits); fallback verified
 
 ## Credentials / actions needed from the owner
 | Item | Where it goes |
