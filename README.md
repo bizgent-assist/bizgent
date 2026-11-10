@@ -85,6 +85,7 @@ These were executed through the real API against the deployed contract (script: 
 | Agent rejected after `revoke_agent` | [9WjHVz37…](https://testnet.nearblocks.io/txns/9WjHVz37YwTZUKcZZDhWxXFbNP6Sk3nFKHMw84zb7PSD) |
 | Owner withdraws 1 USDC | [14pov3eD…](https://testnet.nearblocks.io/txns/14pov3eDvxup9bp1pwD67epr71vZtGXHUoqfsYU7bMZs) |
 | Agent payment executed by the **hosted** Render backend | [FYLDnCYj…](https://testnet.nearblocks.io/txns/FYLDnCYjtj5pLY4vc3tEQuRf9DNahoZMieFMfxGGnR2c) |
+| **AI assistant** (NEAR AI Cloud, live): "Pay the design tool subscription." → `createPaymentProposal` → policy `auto` → agent pays 1 USDC | [9jhXvSBs…](https://testnet.nearblocks.io/txns/9jhXvSBsS5ZzgGBk9GVsMGnHhnpj6SsBGcJAG3NDoopY) |
 
 Contract deployment: [create](https://testnet.nearblocks.io/txns/4Uho8uDin2q9dCVehBbCaYSx3ggHMYg9EnhcYqG7xKTW) · [deploy wasm](https://testnet.nearblocks.io/txns/4oVKUiJbywnFnyzuuwR5BGjux8yQ9KYmqnfRy7hKxLxh) (sha256 `f132ad55…a121`, built in GitHub Actions) · [init](https://testnet.nearblocks.io/txns/5UFWgvZrSdNSH42aSyuXW1o1WU34fGUwrS5gpA5sC8fq).
 Agent key restriction: [add function-call key](https://testnet.nearblocks.io/txns/CfgvpmZ3qnjfXoHKeYXGVkLxRfVKvvGEA3gq56ZmXbc1) · [delete full-access key](https://testnet.nearblocks.io/txns/Df5TbAw1mJDJwuPQKeg92TzrKUmD1LTzpBHB4Zshb4hu).
@@ -108,7 +109,7 @@ Step 5: On the expense, click **Pay**.
 Expected result: The policy engine decides **Needs approval** and lists the reasons (business not registered on-chain / no agent). An approval appears under **Approvals**, and an approval email is sent via Brevo.
 
 Step 6: Open **AI assistant** and ask "What is our balance?".
-Expected result: Either an AI answer, or — while NEAR AI credits are unavailable — a clear "AI unavailable" message with **Create payment manually**. It never fakes an AI reply.
+Expected result: An answer from the NEAR AI model built from your real records (it calls tools such as `getBusinessBalance`). If AI credits are ever exhausted you instead see a clear "AI unavailable" message with **Create payment manually** — never a fake AI reply.
 
 Step 7: Open **Profile** (account menu, top right) → **Connect & link wallet**, choose your testnet wallet and sign the message.
 Expected result: The header shows your account; the server verified a NEP-413 signature against your account's full-access key.
@@ -144,7 +145,7 @@ still isolates balances, limits and recipients per business. In production each 
 |---|---|---|
 | Vault contract, deposits, agent & owner payments, withdrawals, revocation, on-chain verification | Backend unit tests use a simulated vault (the on-chain script above covers the real one) | Mainnet, NEAR Intents, Chain Signatures |
 | Function-call-key agent, NEP-413 wallet linking, NEP-145 checks | `[DEMO]` mock UI exists only with `VITE_ENABLE_MOCKS=true` in dev; production builds refuse it | WhatsApp, invoice upload/OCR, teams, multi-business UI |
-| Brevo approval & payment emails (sent from Render) | NEAR AI: integrated and tool-calling code tested; **the hosted key currently has no credits (HTTP 402)**, so the UI shows the AI-unavailable fallback | Contract audit, 2FA |
+| Brevo approval & payment emails (sent from Render); NEAR AI Cloud assistant with tool calling (live, `claude-haiku-5-5`) | AI usage is capped at 100 requests/day on hackathon credits; if they run out the UI shows the AI-unavailable fallback with manual payment | Contract audit, 2FA |
 
 ## Run locally
 Requirements: Node ≥ 20. Rust is not needed (the wasm is built in GitHub Actions; `contracts/vault` has 20 unit tests run in CI).

@@ -24,7 +24,7 @@ Not claimed: Agent Economy (the agent doesn't earn, negotiate or buy services fr
 1. **Problem (15 s)** — "Small businesses want an AI to pay routine bills, but an AI with a wallet can drain it. Bizgent lets the chain set the limits."
 2. **Dashboard (20 s)** — Jayflint Studio: balance read live from the vault contract, verified payments, TESTNET banner.
 3. **Agent & policy (25 s)** — agent account, "only `agent_pay`", limits 2 USDC / 5 USDC per day stored in the contract. Open the agent account on NearBlocks → its single function-call key.
-4. **Autonomous payment (35 s)** — new 1 USDC expense to the approved supplier → **Pay** → decision *auto* → **Confirmed** → click the NearBlocks link: signer is the agent, `agent_pay` on the vault, USDC `ft_transfer` to the supplier.
+4. **Autonomous payment (35 s)** — in the AI assistant: *"Pay the design tool subscription."* → the AI proposes, policy says *auto* → **Confirmed** → click the NearBlocks link: signer is the agent, `agent_pay` on the vault, USDC `ft_transfer` to the supplier.
 5. **Exception (35 s)** — 3 USDC expense → *needs approval* → approval email → open approval → wallet shows exactly `owner_pay` 3 USDC → sign → Confirmed.
 6. **Defense (25 s)** — show the README table: contract-rejected transactions (over limit, unapproved recipient, replayed id, wrong caller, revoked agent).
 7. **Close (10 s)** — "Built at NEAR HACKATHON: Rust vault, function-call keys, native USDC. Testnet. Feedback welcome — what limits would you want your AI agent to have?"
@@ -71,7 +71,7 @@ Attach the demo video (or screenshots from `docs/screenshots/`).
 - [x] Contract deployed on testnet; real transactions linked in README
 - [x] Frontend and backend live; health endpoint verified
 - [x] No secrets in the repository or its history (scanned)
-- [ ] (Optional) NEAR AI credits on the hosted key so the assistant answers live
+- [x] NEAR AI live on the hosted app (assistant answered and paid a real expense on testnet)
 - [ ] Record a 2–3 min demo video
 - [ ] Publish the X post (tags @NEARProtocol, #NEARHackathon)
 - [ ] Fill the payload above, review it, then submit once

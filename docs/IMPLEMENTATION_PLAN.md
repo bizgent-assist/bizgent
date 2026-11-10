@@ -44,7 +44,7 @@ never has to be reworked around contract semantics.
 - [x] Real testnet e2e via the API (`scripts/near/e2e-testnet.js`): 21/21 checks
 - [x] Vercel (https://bizgent.vercel.app) + Render (https://bizgent-api.onrender.com) + Atlas deployed and verified
 - [x] Brevo emails sent from Render (status `sent`)
-- [ ] NEAR AI model live — key returns HTTP 402 (no credits); fallback verified
+- [x] NEAR AI live (NEAR Builders credits): smoke test ✓ tool calling; assistant paid a real expense on testnet via policy `auto`
 
 ## Credentials / actions needed from the owner
 | Item | Where it goes |
