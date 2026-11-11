@@ -6,6 +6,7 @@ Rules followed: https://nearhackathon.com/HACKATHON.md (read 2026-11-10). Deadli
 - Repository: https://github.com/bizgent-assist/bizgent
 - Live app: https://bizgent.vercel.app
 - API health: https://bizgent-api.onrender.com/api/v1/health
+- Demo video: [`docs/video/bizgent-demo.mp4`](docs/video/bizgent-demo.mp4) (2:04, 1280×720, voice-over + burned-in captions; fits X's 2:20 limit)
 - Vault contract (testnet): https://testnet.nearblocks.io/address/vault.bizgent-operator-jayflint-2026-testnet.testnet
 
 ## Tracks
@@ -21,6 +22,7 @@ Not claimed: Agent Economy (the agent doesn't earn, negotiate or buy services fr
 > Bizgent is an AI finance agent for small businesses that pays routine bills in USDC on NEAR — inside spending limits enforced by a smart contract, not by the AI. The owner deposits native USDC into an isolated balance in the Bizgent vault contract and sets, on-chain, a per-payment limit, a daily limit and a list of approved recipients. A dedicated agent account holds only a function-call key that can call one method, agent_pay; the contract re-checks the agent, recipient, both limits, balance and a unique payment id on every call. Payments outside policy become approvals: the owner is emailed, logs in and signs the exact owner_pay transaction in their own wallet — an email link never moves money. The backend verifies each NEAR transaction outcome, contract event and vault record before showing "Paid". An assistant on NEAR AI Cloud reads expenses and proposes payments through the same policy engine; it has no key. Built during the hackathon: Rust vault contract (deployed on testnet), Express/MongoDB API, React app (live on Vercel/Render), with testnet transactions proving each enforcement rule (over-limit, unapproved recipient, replay, revoked agent all rejected by the contract).
 
 ## Demo script (2–3 min)
+The recorded video follows this script (see [`docs/video/README.md`](docs/video/README.md) for the exact narration and on-chain proof).
 1. **Problem (15 s)** — "Small businesses want an AI to pay routine bills, but an AI with a wallet can drain it. Bizgent lets the chain set the limits."
 2. **Dashboard (20 s)** — Jayflint Studio: balance read live from the vault contract, verified payments, TESTNET banner.
 3. **Agent & policy (25 s)** — agent account, "only `agent_pay`", limits 2 USDC / 5 USDC per day stored in the contract. Open the agent account on NearBlocks → its single function-call key.
@@ -46,7 +48,7 @@ Best screens: `docs/screenshots/02-dashboard.png`, `04-agent-policy.png`, `03-tr
 >
 > #NEARHackathon @NearLegion @NearBuilders
 
-Attach the demo video (or screenshots from `docs/screenshots/`).
+Attach `docs/video/bizgent-demo.mp4` (upload the file to X directly; captions are burned in for muted autoplay).
 
 ## Submission payload (draft — submit ONLY after the human confirms every value)
 `POST https://nearhackathon.com/api/applications` or the form at https://nearhackathon.com/#apply. One submission per repo; never resubmit — use https://nearhackathon.com/request-changes.
@@ -72,7 +74,7 @@ Attach the demo video (or screenshots from `docs/screenshots/`).
 - [x] Frontend and backend live; health endpoint verified
 - [x] No secrets in the repository or its history (scanned)
 - [x] NEAR AI live on the hosted app (assistant answered and paid a real expense on testnet)
-- [ ] Record a 2–3 min demo video
+- [x] Record a 2–3 min demo video (`docs/video/bizgent-demo.mp4`) — watch it once before posting
 - [ ] Publish the X post (tags @NEARProtocol, #NEARHackathon)
 - [ ] Fill the payload above, review it, then submit once
 - [ ] Keep the app, contract and repo up through judging (ideally until 2026-11-25)

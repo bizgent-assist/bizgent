@@ -1,0 +1,67 @@
+1
+00:00:00,505 --> 00:00:05,750
+Meet Bizgent: an AI finance agent for small businesses, built on NEAR.
+
+2
+00:00:06,364 --> 00:00:12,274
+Small businesses want AI to pay routine bills. But an AI with a wallet can drain it.
+
+3
+00:00:12,377 --> 00:00:17,032
+With Bizgent, a smart contract sets the limits, not the AI.
+
+4
+00:00:17,645 --> 00:00:21,120
+This is Jayflint Studio, on NEAR testnet.
+
+5
+00:00:21,225 --> 00:00:28,090
+Its USDC balance is read live from the Bizgent vault contract, and every payment shown here was verified on chain.
+
+6
+00:00:29,110 --> 00:00:37,515
+The owner set a 2 USDC per-payment limit, a 5 USDC daily limit, and approved recipients, all stored in the contract.
+
+7
+00:00:38,134 --> 00:00:44,514
+The agent account holds one function-call key. It can call exactly one method: agent_pay.
+
+8
+00:00:45,130 --> 00:00:51,015
+Now I ask the assistant, running on NEAR AI Cloud, to pay the cloud storage invoice.
+
+9
+00:00:53,119 --> 00:01:00,259
+It finds the expense and proposes the payment. The policy allows it, so the agent pays 1 USDC.
+
+10
+00:01:00,368 --> 00:01:02,368
+Confirmed on chain.
+
+11
+00:01:03,774 --> 00:01:09,964
+On chain: the agent called agent_pay on the vault, and the vault sent USDC to the supplier.
+
+12
+00:01:16,029 --> 00:01:23,074
+A 3 USDC licence is over the per-payment limit, so the AI can't pay it. It becomes an approval.
+
+13
+00:01:27,671 --> 00:01:34,061
+The owner is emailed, but an email link never moves money. The owner reviews the exact payment...
+
+14
+00:01:34,671 --> 00:01:40,366
+...signs owner_pay with their own NEAR key, and Bizgent verifies it on chain before marking it paid.
+
+15
+00:01:40,977 --> 00:01:51,977
+The limits are real: on testnet, the contract rejected an over-limit payment, an unapproved recipient, a replayed payment ID, a wrong caller, and a revoked agent.
+
+16
+00:01:52,588 --> 00:01:59,563
+Bizgent: contract-enforced limits for AI money. Try it at bizgent.vercel.app.
+
+17
+00:01:59,674 --> 00:02:02,814
+What limits would you give your AI finance agent?

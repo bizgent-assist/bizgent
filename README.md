@@ -9,6 +9,7 @@ NEAR HACKATHON 2026 · Tracks: Autonomous Business, AI Security & Defense ·
 | | |
 |---|---|
 | Live app | **https://bizgent.vercel.app** |
+| Demo video (2:04, voice-over + captions) | [`docs/video/bizgent-demo.mp4`](docs/video/bizgent-demo.mp4) — recorded against the live app on 2026-11-11 |
 | Backend API | https://bizgent-api.onrender.com · health: **https://bizgent-api.onrender.com/api/v1/health** |
 | Vault contract | [`vault.bizgent-operator-jayflint-2026-testnet.testnet`](https://testnet.nearblocks.io/address/vault.bizgent-operator-jayflint-2026-testnet.testnet) |
 | Agent account | [`agent-udio-8c0cb9.bizgent-operator-jayflint-2026-testnet.testnet`](https://testnet.nearblocks.io/address/agent-udio-8c0cb9.bizgent-operator-jayflint-2026-testnet.testnet) (function-call key for `agent_pay` only) |
@@ -86,6 +87,8 @@ These were executed through the real API against the deployed contract (script: 
 | Owner withdraws 1 USDC | [14pov3eD…](https://testnet.nearblocks.io/txns/14pov3eDvxup9bp1pwD67epr71vZtGXHUoqfsYU7bMZs) |
 | Agent payment executed by the **hosted** Render backend | [FYLDnCYj…](https://testnet.nearblocks.io/txns/FYLDnCYjtj5pLY4vc3tEQuRf9DNahoZMieFMfxGGnR2c) |
 | **AI assistant** (NEAR AI Cloud, live): "Pay the design tool subscription." → `createPaymentProposal` → policy `auto` → agent pays 1 USDC | [9jhXvSBs…](https://testnet.nearblocks.io/txns/9jhXvSBsS5ZzgGBk9GVsMGnHhnpj6SsBGcJAG3NDoopY) |
+| Demo video (2026-11-11): AI assistant "Pay the cloud storage invoice." → policy `auto` → agent pays 1 USDC | [7Q3j5Dkt…](https://testnet.nearblocks.io/txns/7Q3j5DktN9fybAEytvRwXbsF9dWPYcQBVsFn6SCLhb38) |
+| Demo video (2026-11-11): AI proposes a 3 USDC licence → over limit → approval → owner signs `owner_pay` | [9FP8ndAW…](https://testnet.nearblocks.io/txns/9FP8ndAW7EyMiNTp8cqcC5tRRn5XRo2dtXeNeYfcRZwQ) |
 
 Contract deployment: [create](https://testnet.nearblocks.io/txns/4Uho8uDin2q9dCVehBbCaYSx3ggHMYg9EnhcYqG7xKTW) · [deploy wasm](https://testnet.nearblocks.io/txns/4oVKUiJbywnFnyzuuwR5BGjux8yQ9KYmqnfRy7hKxLxh) (sha256 `f132ad55…a121`, built in GitHub Actions) · [init](https://testnet.nearblocks.io/txns/5UFWgvZrSdNSH42aSyuXW1o1WU34fGUwrS5gpA5sC8fq).
 Agent key restriction: [add function-call key](https://testnet.nearblocks.io/txns/CfgvpmZ3qnjfXoHKeYXGVkLxRfVKvvGEA3gq56ZmXbc1) · [delete full-access key](https://testnet.nearblocks.io/txns/Df5TbAw1mJDJwuPQKeg92TzrKUmD1LTzpBHB4Zshb4hu).
