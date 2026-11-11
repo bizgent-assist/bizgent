@@ -33,40 +33,37 @@ The recorded video follows this script (see [`docs/video/README.md`](docs/video/
 
 Best screens: `docs/screenshots/02-dashboard.png`, `04-agent-policy.png`, `03-treasury.png`, `05-transactions.png`, the ApprovalDetail page, NearBlocks pages for the agent account and an `agent_pay` transaction.
 
-## X post draft (human posts it — never automated)
+## Demo post on X (published 2026-11-11)
+Link: https://x.com/jayflint_tech/status/2120521406329086313
+
+Text as posted (with the 2:04 demo video `docs/video/bizgent-demo.mp4` attached):
 > Built at NEAR HACKATHON: Bizgent 🧾🤖
 >
-> Small businesses want AI to pay routine bills — but an AI with a wallet can drain it.
+> AI-powered business payments, protected by smart-contract-enforced spending limits on @NEARProtocol.
 >
-> Bizgent's agent pays suppliers in USDC on @NEARProtocol, but only within limits the smart contract enforces: approved recipients, per-payment + daily caps, and a function-call key that can call exactly one method. Anything else needs the owner's wallet signature.
+> Live demo (testnet): https://bizgent.vercel.app
 >
-> Demo 👇 (testnet)
-> App: https://bizgent.vercel.app
-> Code: https://github.com/bizgent-assist/bizgent
->
-> What limits would you give your AI finance agent?
->
-> #NEARHackathon @NearLegion @NearBuilders
+> #NEARHackathon @NEARLegion @NearBuilders
 
-Attach `docs/video/bizgent-demo.mp4` (upload the file to X directly; captions are burned in for muted autoplay).
+Meets the rules: says it was built at NEAR HACKATHON, tags @NEARProtocol and #NEARHackathon (plus the optional @NEARLegion and @NearBuilders), and has the demo video attached. The repository link is in the video's closing screen and in the submission.
 
-## Submission payload (draft — submit ONLY after the human confirms every value)
-`POST https://nearhackathon.com/api/applications` or the form at https://nearhackathon.com/#apply. One submission per repo; never resubmit — use https://nearhackathon.com/request-changes.
-```json
-{
-  "requestId": "<generate one UUID and reuse it on retries>",
-  "projectName": "Bizgent",
-  "leadName": "<your name>",
-  "email": "<your email>",
-  "size": "1",
-  "tracks": ["security", "business", "realworld"],
-  "nearAddress": "<your MAINNET account for payout, e.g. name.near>",
-  "projectUrl": "https://github.com/bizgent-assist/bizgent",
-  "demoUrl": "<URL of your X demo post>",
-  "idea": "<the project description above>",
-  "consent": true
-}
-```
+## Submission (form at https://nearhackathon.com/#apply — submitted by the human, once)
+One submission per repository; mistakes are fixed at https://nearhackathon.com/request-changes, never by submitting again.
+Personal fields (team lead name, email, payout wallet) are entered in the form only and are deliberately not stored in this repository.
+
+| Form field | Value |
+|---|---|
+| Project name | `Bizgent` |
+| Team lead | *(your name — form only)* |
+| Email address | *(your email — form only)* |
+| Team size | `1 — Solo builder` |
+| Tracks | AI Security & Defense, Autonomous Business, Real-World Money (`security`, `business`, `realworld`) |
+| NEAR wallet address | *(your **mainnet** payout account, e.g. `name.near` — form only)* |
+| Repository link | `https://github.com/bizgent-assist/bizgent` |
+| Demo post link | `https://x.com/jayflint_tech/status/2120521406329086313` |
+| What did you build? | the project description above |
+| Website (hidden spam trap) | leave empty |
+| Consent | tick |
 
 ## Final checklist
 - [x] Repository public, MIT LICENSE, README with judge walkthrough and disclosures
@@ -75,6 +72,6 @@ Attach `docs/video/bizgent-demo.mp4` (upload the file to X directly; captions ar
 - [x] No secrets in the repository or its history (scanned)
 - [x] NEAR AI live on the hosted app (assistant answered and paid a real expense on testnet)
 - [x] Record a 2–3 min demo video (`docs/video/bizgent-demo.mp4`) — watch it once before posting
-- [ ] Publish the X post (tags @NEARProtocol, #NEARHackathon)
-- [ ] Fill the payload above, review it, then submit once
+- [x] Publish the X post (tags @NEARProtocol, #NEARHackathon) — https://x.com/jayflint_tech/status/2120521406329086313
+- [ ] Submit once via the form above (human)
 - [ ] Keep the app, contract and repo up through judging (ideally until 2026-11-25)

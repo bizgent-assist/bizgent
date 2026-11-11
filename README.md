@@ -3,12 +3,13 @@
 **An AI finance agent for small businesses that pays routine bills in USDC on NEAR — but only
 inside spending limits a smart contract enforces. Everything else needs the owner's wallet signature.**
 
-NEAR HACKATHON 2026 · Tracks: Autonomous Business, AI Security & Defense ·
+NEAR HACKATHON 2026 · Tracks: AI Security & Defense, Autonomous Business, Real-World Money ·
 **NEAR testnet only · unaudited contract · test USDC has no real value**
 
 | | |
 |---|---|
 | Live app | **https://bizgent.vercel.app** |
+| Demo post on X | https://x.com/jayflint_tech/status/2120521406329086313 |
 | Demo video (2:04, voice-over + captions) | [`docs/video/bizgent-demo.mp4`](docs/video/bizgent-demo.mp4) — recorded against the live app on 2026-11-11 |
 | Backend API | https://bizgent-api.onrender.com · health: **https://bizgent-api.onrender.com/api/v1/health** |
 | Vault contract | [`vault.bizgent-operator-jayflint-2026-testnet.testnet`](https://testnet.nearblocks.io/address/vault.bizgent-operator-jayflint-2026-testnet.testnet) |
